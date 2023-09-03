@@ -3,7 +3,7 @@ const Sequelize = require("sequelize");
 class mysql {
   connectDB() {
     // Connect Database
-    const sequelize = new Sequelize("transactions", "root", "", {
+    const sequelize = new Sequelize("transactions", "root", "3306", {
       host: "127.0.0.1",
       dialect: "mysql",
     });

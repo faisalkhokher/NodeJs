@@ -5,19 +5,44 @@ const cors = require("cors");
 var bodyParser = require("body-parser");
 var File = require("./Controller/file");
 const PolicyController = require("./Controller/PolicyController");
+const http = require('http');
+const fs = require('fs');
+// const url = require('url');
 
 var log = require("logger").createLogger("logs/development.log"); // logs to a file
-
 app.use(cors());
 
 // Configuring body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// * HTTP
+port = 4000; 
+const server = http.createServer( (req,res) => {
+  console.log(req.url);
+  if (req.url == '/index') {
+    fs.readFile('index.html' , 'utf-8' , (err,data)=>{
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+    } else {
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(data);
+    }
+    })
+  }
+});
+
+// * Port Listen
+server.listen(port , '127.0.0.1' , function (req,res) { 
+  console.log(`Http Server Enable on Port ${port}`);
+})
 app.listen(3000, () => {
   console.log("Port Listen to 3000");
 });
 
+
+// * APIs
 app.get("/api", function (req, res, next) {
   log.info("START");
   // res.send('Hello World, from express');
@@ -55,7 +80,8 @@ app.post("/file", (req, res) => {
   return res.json(fileObj.getDta());
 });
 
-app.post("/sql", (req, res, next) => {
+app.post("/policies", (req, res, next) => {
+  console.log("Hit PO");
   const Obj = new PolicyController();
   return Obj.getPolicies()
     .then((result) => {
@@ -67,3 +93,4 @@ app.post("/sql", (req, res, next) => {
     })
     .catch((err) => {});
 });
+
