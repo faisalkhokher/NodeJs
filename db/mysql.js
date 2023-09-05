@@ -3,9 +3,11 @@ const Sequelize = require("sequelize");
 class mysql {
   connectDB() {
     // Connect Database
-    const sequelize = new Sequelize("transactions", "root", "3306", {
-      host: "127.0.0.1",
-      dialect: "mysql",
+    const sequelize = new Sequelize('transactions', 'root', '', {
+      host: '127.0.0.1',
+      dialect: 'mysql',
+      port: 3306, // Default MySQL port
+      // Other options...
     });
 
     sequelize.authenticate()

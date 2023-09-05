@@ -80,7 +80,7 @@ app.post("/file", (req, res) => {
   return res.json(fileObj.getDta());
 });
 
-app.post("/policies", (req, res, next) => {
+app.get("/policies", (req, res, next) => {
   console.log("Hit PO");
   const Obj = new PolicyController();
   return Obj.getPolicies()
