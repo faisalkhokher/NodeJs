@@ -94,3 +94,47 @@ app.get("/policies", (req, res, next) => {
     .catch((err) => {});
 });
 
+app.get('/products' , (req,res) => {
+  
+  // var test = {'1':'world','2':'world2'}
+  // for(let x in test)
+  // {
+  //   let inxed = x;
+  //   let value = test[inxed]
+  //   console.log('index ' + x + ' has value of ' + value)
+  // }
+  
+
+
+  axios.get('https://dummyjson.com/products').then((result) => {
+    arr = result.data.products;
+    // Create an empty response object
+    const response = {
+      success: false,
+      message: "",
+      data: [],
+    };
+    // * ForEach
+      // emptyData = [];
+      // array.forEach(e => {
+      //   eachData = [
+      //     "MapId" = e['id']
+      //   ]
+      //   data.push(eachData); // Push each fdata object into the data array
+      // });
+      // console.log(emptyData);
+
+    // * MAP
+    const data = arr.map((p,i) => ({
+      id : `Index Of ${i} is the value of ${p.title}`,
+    }));
+
+    response.success = true;
+    response.message = "Data Fetched";
+    response.data = data;
+    return res.json(response)
+  }).catch((err) => {
+    console.log(err);
+  });
+});
+
